@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframeworck.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns="http://www.springframework.org/schema/beans">
+
+	<context:property-placeholder
+		location="classpath:db.properties" />
+
+
+	<bean class="org.apache.commons.dbcp2.BasicDataSource"
+		id="dataSource">
+
+		<property value="${db.driverClassName}"
+			name="driverClassName" />
+
+		<property value="${db.url}" name="url" />
+
+		<property value="${db.username}" name="username" />
+
+		<property value="${db.password}" name="password" />
+
+	</bean>
+
+
+	<bean
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		id="entityManagerFactory">
+
+		<property name="dataSource" ref="dataSource" />
+
+
+
+		<property name="jpaVendorAdapter">
+
+			<bean
+				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+
+		</property>
+
+		<property value="com.xworkz.login.entity"
+			name="packagesToScan" />
+
+
+
+		<property name="jpaProperties">
+
+
+
+			<props>
+
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+
+			</props>
+
+		</property>
+
+	</bean>
+
+	<!-- <bean id="registrationdao" class="com.xworkz.placement.dao.RegistrationDAO"><property 
+		name="entityManagerFactory"ref="entityManagerFactory"></property></bean> -->
+
+
+	<context:component-scan
+		base-package="com.xworkz.login" />
+
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		id="viewResolver">
+
+		<property value="/" name="prefix" />
+
+		<property value=".jsp" name="suffix" />
+
+	</bean>
+
+</beans>
